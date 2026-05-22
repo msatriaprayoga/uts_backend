@@ -9,12 +9,20 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://uts-front-3mbwr14ku-msatriaprayoga92-9762s-projects.vercel.app"
-  ],
-  credentials: true
+  origin: (origin, callback) => {
+    if (
+      !origin ||
+      origin.includes("vercel.app") ||
+      origin === "http://localhost:5173"
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
 }));
+app.options('*',cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
