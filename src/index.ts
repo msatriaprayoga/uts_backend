@@ -32,8 +32,10 @@ app.get('/health', (_req, res) => {
 
 app.use('/api', routes);
 
-app.listen(PORT, () => {
-  console.log(`Server Berjalan di port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server berjalan di port ${PORT}`);
+  });
+}
 
 export default app;
